@@ -1,0 +1,95 @@
+//
+// Created by zhuoL on 2021/9/26.
+//
+#include<stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node *next;
+} LNode;
+
+LNode *initList(LNode *p) {
+    LNode *temp = p;
+    for (int i = 0; i < 5; ++i) {
+        LNode *a = malloc(sizeof(LNode));
+        a->data = i;
+        a->next = NULL;
+        temp->next = a;
+        temp = temp->next;
+    }
+    return p;
+}
+
+LNode *upDate(LNode *p, int position, int newData) {
+    //链表头结点表示链表的第0位置
+    LNode *temp = p;
+    temp = temp->next;
+    for (int i = 1; i < position && position != 0; ++i) {
+        temp = temp->next;
+    }
+    temp->data = newData;
+    return p;
+}
+
+LNode *delNode(LNode *p, int position) {
+    LNode *temp = p;
+    temp = temp->next;
+    for (int i = 1; i < position; ++i) {
+        temp = temp->next;
+    }
+    LNode *del = temp->next;
+    temp->next = temp->next->next;
+    free(del);
+    return p;
+}
+
+LNode *insertNode(LNode *pHead, int position, int newData) {
+    LNode *temp = pHead;
+    temp = temp->next;
+    for (int i = 0; i < position; ++i) {
+        temp = temp->next;
+    }
+    LNode *newNode = malloc(sizeof(LNode));
+    newNode->data = newData;
+    newNode->next = temp->next;
+    temp->next = newNode;
+    return pHead;
+}
+
+int selectNode(LNode *pHead, int data) {
+    int position = 1;
+    LNode *temp = pHead;
+    while (temp->next) {
+        temp = temp->next;
+        if (temp->data = data) {
+            return ++position;
+        }
+    }
+    return -1;
+}
+
+void disPlay(LNode *p) {
+    LNode *temp = p;
+    while (temp->next) {
+        temp = temp->next;
+        printf("%d ", temp->data);
+    }
+    printf("\n");
+}
+
+int main() {
+    LNode *p = (LNode *) malloc(sizeof(LNode));
+    puts("初始化单链表为:");
+    initList(p);
+    disPlay(p);
+    upDate(p, 2, 10);
+    disPlay(p);
+    delNode(p, 1);
+    disPlay(p);
+    //end insert
+    insertNode(p, 0, 10);
+    disPlay(p);
+    printf("元素10的位置为%d", selectNode(p, 10));
+    return 0;
+}
